@@ -343,7 +343,7 @@ static void appleir_remove(struct hid_device *hid)
 	appleir->removing = true;
 	spin_unlock_irqrestore(&appleir->lock, flags);
 
-	timer_shutdown_sync(&appleir->key_up_timer);
+	del_timer_sync(&appleir->key_up_timer);
 	hid_hw_stop(hid);
 }
 

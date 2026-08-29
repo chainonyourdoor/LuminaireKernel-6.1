@@ -438,7 +438,7 @@ static void batadv_tp_sender_cleanup(struct batadv_tp_vars *tp_vars)
 	batadv_tp_list_detach(tp_vars);
 
 	/* kill the timer and remove its reference */
-	timer_shutdown_sync(&tp_vars->timer);
+	del_timer_sync(&tp_vars->timer);
 	batadv_tp_vars_put(tp_vars);
 }
 
@@ -1612,7 +1612,7 @@ void batadv_tp_stop_all(struct batadv_priv *bat_priv)
 			break;
 		case BATADV_TP_RECEIVER:
 			batadv_tp_list_detach(tp_var);
-			timer_shutdown_sync(&tp_var->timer);
+			del_timer_sync(&tp_var->timer);
 
 			if (atomic_xchg(&tp_var->receiving, 0) != 1)
 				break;

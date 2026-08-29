@@ -646,7 +646,7 @@ static void ppp_timer_release(struct net_device *dev)
 	int i;
 
 	for (i = 0; i < IDX_COUNT; i++)
-		timer_shutdown_sync(&ppp->protos[i].timer);
+		del_timer_sync(&ppp->protos[i].timer);
 }
 
 static struct hdlc_proto proto = {
