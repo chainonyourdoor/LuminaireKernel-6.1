@@ -32,6 +32,9 @@
 #define HCI_MAX_FRAME_SIZE	(HCI_MAX_ACL_SIZE + 4)
 
 #define HCI_LINK_KEY_SIZE	16
+#define HCI_AMP_LINK_KEY_SIZE	(2 * HCI_LINK_KEY_SIZE)
+
+#define HCI_MAX_AMP_ASSOC_SIZE	672
 
 #define HCI_MAX_CPB_DATA_SIZE	252
 
@@ -66,6 +69,10 @@
 #define HCI_I2C		8
 #define HCI_SMD		9
 #define HCI_VIRTIO	10
+
+/* HCI controller types */
+#define HCI_PRIMARY	0x00
+#define HCI_AMP		0x01
 
 /* HCI device quirks */
 enum {

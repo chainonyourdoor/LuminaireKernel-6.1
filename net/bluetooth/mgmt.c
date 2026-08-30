@@ -2546,7 +2546,7 @@ static bool pending_eir_or_class(struct hci_dev *hdev)
 	struct mgmt_pending_cmd *cmd;
 	bool pending = false;
 
-	mutex_lock(&hdev->mgmt_pending_lock);
+	mutex_lock(hdev->mgmt_pending_lock);
 
 	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
 		switch (cmd->opcode) {
@@ -2563,7 +2563,7 @@ static bool pending_eir_or_class(struct hci_dev *hdev)
 			break;
 	}
 
-	mutex_unlock(&hdev->mgmt_pending_lock);
+	mutex_unlock(hdev->mgmt_pending_lock);
 
 	return pending;
 }
@@ -3374,7 +3374,7 @@ static struct mgmt_pending_cmd *remove_pairing(struct hci_conn *conn)
 	struct hci_dev *hdev = conn->hdev;
 	struct mgmt_pending_cmd *cmd;
 
-	mutex_lock(&hdev->mgmt_pending_lock);
+	mutex_lock(hdev->mgmt_pending_lock);
 
 	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
 		if (cmd->opcode != MGMT_OP_PAIR_DEVICE)
@@ -3384,11 +3384,11 @@ static struct mgmt_pending_cmd *remove_pairing(struct hci_conn *conn)
 			continue;
 
 		list_del(&cmd->list);
-		mutex_unlock(&hdev->mgmt_pending_lock);
+		mutex_unlock(hdev->mgmt_pending_lock);
 		return cmd;
 	}
 
-	mutex_unlock(&hdev->mgmt_pending_lock);
+	mutex_unlock(hdev->mgmt_pending_lock);
 
 	return NULL;
 }
@@ -3399,7 +3399,7 @@ static struct mgmt_pending_cmd *remove_pairing_by_addr(struct hci_dev *hdev,
 	struct mgmt_pending_cmd *cmd;
 	struct hci_conn *conn;
 
-	mutex_lock(&hdev->mgmt_pending_lock);
+	mutex_lock(hdev->mgmt_pending_lock);
 
 	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
 		if (cmd->opcode != MGMT_OP_PAIR_DEVICE)
@@ -3410,11 +3410,11 @@ static struct mgmt_pending_cmd *remove_pairing_by_addr(struct hci_dev *hdev,
 			continue;
 
 		list_del(&cmd->list);
-		mutex_unlock(&hdev->mgmt_pending_lock);
+		mutex_unlock(hdev->mgmt_pending_lock);
 		return cmd;
 	}
 
-	mutex_unlock(&hdev->mgmt_pending_lock);
+	mutex_unlock(hdev->mgmt_pending_lock);
 
 	return NULL;
 }

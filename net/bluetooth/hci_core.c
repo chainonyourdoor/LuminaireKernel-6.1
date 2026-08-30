@@ -2498,11 +2498,20 @@ struct hci_dev *hci_alloc_dev_priv(int sizeof_priv)
 
 	mutex_init(&hdev->lock);
 	mutex_init(&hdev->req_lock);
-	mutex_init(&hdev->mgmt_pending_lock);
+
+	hdev->mgmt_pending_lock = kzalloc(sizeof(*hdev->mgmt_pending_lock),
+					  GFP_KERNEL);
+	if (!hdev->mgmt_pending_lock) {
+		kfree(hdev);
+		return NULL;
+	}
+
+	mutex_init(hdev->mgmt_pending_lock);
 
 	hdev->unset_handle_ida = kzalloc(sizeof(*hdev->unset_handle_ida),
 					 GFP_KERNEL);
 	if (!hdev->unset_handle_ida) {
+		kfree(hdev->mgmt_pending_lock);
 		kfree(hdev);
 		return NULL;
 	}
@@ -2750,6 +2759,8 @@ void hci_release_dev(struct hci_dev *hdev)
 
 	ida_destroy(hdev->unset_handle_ida);
 	kfree(hdev->unset_handle_ida);
+	mutex_destroy(hdev->mgmt_pending_lock);
+	kfree(hdev->mgmt_pending_lock);
 	ida_free(&hci_index_ida, hdev->id);
 	kfree_skb(hdev->sent_cmd);
 	kfree_skb(hdev->recv_event);

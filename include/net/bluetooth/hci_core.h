@@ -125,6 +125,7 @@ enum suspended_state {
 struct hci_conn_hash {
 	struct list_head list;
 	unsigned int     acl_num;
+	unsigned int     amp_num;
 	unsigned int     sco_num;
 	unsigned int     iso_num;
 	unsigned int     le_num;
@@ -335,6 +336,14 @@ struct adv_monitor {
 /* Default authenticated payload timeout 30s */
 #define DEFAULT_AUTH_PAYLOAD_TIMEOUT   0x0bb8
 
+struct amp_assoc {
+	__u16	len;
+	__u16	offset;
+	__u16	rem_len;
+	__u16	len_so_far;
+	__u8	data[HCI_MAX_AMP_ASSOC_SIZE];
+};
+
 #define HCI_MAX_PAGES	3
 
 struct hci_dev {
@@ -345,6 +354,7 @@ struct hci_dev {
 	unsigned long	flags;
 	__u16		id;
 	__u8		bus;
+	__u8		dev_type;
 	bdaddr_t	bdaddr;
 	bdaddr_t	setup_addr;
 	bdaddr_t	public_addr;
@@ -450,6 +460,21 @@ struct hci_dev {
 	__u16		sniff_min_interval;
 	__u16		sniff_max_interval;
 
+	__u8		amp_status;
+	__u32		amp_total_bw;
+	__u32		amp_max_bw;
+	__u32		amp_min_latency;
+	__u32		amp_max_pdu;
+	__u8		amp_type;
+	__u16		amp_pal_cap;
+	__u16		amp_assoc_size;
+	__u32		amp_max_flush_to;
+	__u32		amp_be_flush_to;
+
+	struct amp_assoc	loc_assoc;
+
+	__u8		flow_ctl_mode;
+
 	unsigned int	auto_accept_delay;
 
 	unsigned long	quirks;
@@ -468,6 +493,11 @@ struct hci_dev {
 	unsigned int	sco_pkts;
 	unsigned int	le_pkts;
 	unsigned int	iso_pkts;
+
+	__u16		block_len;
+	__u16		block_mtu;
+	__u16		num_blocks;
+	__u16		block_cnt;
 
 	unsigned long	acl_last_tx;
 	unsigned long	sco_last_tx;
@@ -539,7 +569,6 @@ struct hci_dev {
 	struct hci_conn_hash	conn_hash;
 
 	struct list_head	mesh_pending;
-	struct mutex		mgmt_pending_lock;
 	struct list_head	mgmt_pending;
 	struct list_head	reject_list;
 	struct list_head	accept_list;
@@ -641,7 +670,7 @@ struct hci_dev {
 				     __u8 **vnd_data);
 
 	ANDROID_KABI_USE(1, struct ida *unset_handle_ida);
-	ANDROID_KABI_RESERVE(2);
+	ANDROID_KABI_USE(2, struct mutex *mgmt_pending_lock);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
 };
@@ -740,6 +769,7 @@ struct hci_conn {
 	void		*l2cap_data;
 	void		*sco_data;
 	void		*iso_data;
+	struct amp_mgr	*amp_mgr;
 
 	struct hci_conn	*link;
 	struct bt_codec codec;
