@@ -323,7 +323,9 @@ struct ucsi_connector {
 
 	struct ucsi *ucsi;
 	struct mutex lock; /* port lock */
+#ifndef __GENKSYMS__
 	struct lock_class_key lock_key;
+#endif
 	struct work_struct work;
 	struct completion complete;
 	struct workqueue_struct *wq;

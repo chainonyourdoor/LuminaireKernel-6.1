@@ -1864,13 +1864,24 @@ struct drm_tile_group {
 	struct kref refcount;
 	struct drm_device *dev;
 	int id;
+#ifdef __GENKSYMS__
+	u8 group_data[8];
+#else
 	u8 group_data[9];
+#endif
 };
 
+#ifdef __GENKSYMS__
+struct drm_tile_group *drm_mode_create_tile_group(struct drm_device *dev,
+						  const char topology[8]);
+struct drm_tile_group *drm_mode_get_tile_group(struct drm_device *dev,
+					       const char topology[8]);
+#else
 struct drm_tile_group *drm_mode_create_tile_group(struct drm_device *dev,
 						  const char topology_id[9]);
 struct drm_tile_group *drm_mode_get_tile_group(struct drm_device *dev,
 					       const char topology_id[9]);
+#endif
 void drm_mode_put_tile_group(struct drm_device *dev,
 			     struct drm_tile_group *tg);
 
