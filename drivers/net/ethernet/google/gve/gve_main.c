@@ -530,7 +530,7 @@ static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
 
 	if (block->rx && !gve_is_gqi(priv))
-		timer_shutdown_sync(&block->rx->starvation_timer);
+		del_timer_sync(&block->rx->starvation_timer);
 
 	netif_napi_del(&block->napi);
 	disable_irq(block->irq);
