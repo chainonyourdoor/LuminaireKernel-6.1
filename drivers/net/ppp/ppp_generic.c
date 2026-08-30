@@ -1548,6 +1548,10 @@ static int ppp_dev_init(struct net_device *dev)
 {
 	struct ppp *ppp;
 
+	dev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
+	if (!dev->tstats)
+		return -ENOMEM;
+
 	netdev_lockdep_set_classes(dev);
 
 	ppp = netdev_priv(dev);
@@ -1586,6 +1590,8 @@ static void ppp_dev_priv_destructor(struct net_device *dev)
 	ppp = netdev_priv(dev);
 	if (refcount_dec_and_test(&ppp->file.refcnt))
 		ppp_destroy_interface(ppp);
+
+	free_percpu(dev->tstats);
 }
 
 static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
@@ -1639,7 +1645,6 @@ static void ppp_setup(struct net_device *dev)
 	dev->type = ARPHRD_PPP;
 	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
 	dev->priv_destructor = ppp_dev_priv_destructor;
-	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
 	dev->features = NETIF_F_SG | NETIF_F_FRAGLIST;
 	dev->hw_features = dev->features;
 	netif_keep_dst(dev);
