@@ -42,7 +42,14 @@ struct ppp_channel {
 	int		hdrlen;		/* amount of headroom channel needs */
 	void		*ppp;		/* opaque to channel */
 	int		speed;		/* transfer rate (bytes/second) */
-	bool		direct_xmit;	/* no qdisc, xmit directly */
+#ifdef __GENKSYMS__
+	int		latency;
+#else
+	union {
+		int	latency;	/* unused, retained for the frozen KMI */
+		bool	direct_xmit;	/* no qdisc, xmit directly */
+	};
+#endif
 };
 
 #ifdef __KERNEL__

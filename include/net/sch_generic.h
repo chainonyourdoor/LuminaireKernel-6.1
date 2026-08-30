@@ -101,7 +101,7 @@ struct Qdisc {
 	struct hlist_node       hash;
 	u32			handle;
 	u32			parent;
-	int			depth;
+	/* moved to ANDROID_KABI_USE(1, int depth) */
 
 	struct netdev_queue	*dev_queue;
 
@@ -128,7 +128,7 @@ struct Qdisc {
 
 	struct rcu_head		rcu;
 	netdevice_tracker	dev_tracker;
-	ANDROID_KABI_RESERVE(1);
+	ANDROID_KABI_USE(1, int depth);
 
 	/* private data */
 	long privdata[] ____cacheline_aligned;
