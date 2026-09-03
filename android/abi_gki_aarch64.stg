@@ -329354,6 +329354,13 @@ function {
   parameter_id: 0x3c63caea
 }
 function {
+  id: 0x9b10aaa0
+  return_type_id: 0x6720d32f
+  parameter_id: 0x18bd6530
+  parameter_id: 0x2ed870a7
+  parameter_id: 0x11c404ba
+}
+function {
   id: 0x9b10b4a6
   return_type_id: 0x6720d32f
   parameter_id: 0x18bd6530
@@ -349916,6 +349923,33 @@ elf_symbol {
   full_name: "__trace_trigger_soft_disabled"
 }
 elf_symbol {
+  id: 0x70a558c6
+  name: "__traceiter_alarmtimer_cancel"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0x175390f6
+  type_id: 0x9b10aaa0
+  full_name: "__traceiter_alarmtimer_cancel"
+}
+elf_symbol {
+  id: 0xd75d3861
+  name: "__traceiter_alarmtimer_fired"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xa70def07
+  type_id: 0x9b10aaa0
+  full_name: "__traceiter_alarmtimer_fired"
+}
+elf_symbol {
+  id: 0xc8ca393a
+  name: "__traceiter_alarmtimer_start"
+  is_defined: true
+  symbol_type: FUNCTION
+  crc: 0xcefc06c8
+  type_id: 0x9b10aaa0
+  full_name: "__traceiter_alarmtimer_start"
+}
+elf_symbol {
   id: 0x17dfc6db
   name: "__traceiter_android_rvh_account_irq"
   is_defined: true
@@ -356088,6 +356122,33 @@ elf_symbol {
   crc: 0x18a41e69
   type_id: 0x9b6e0d6b
   full_name: "__traceiter_xdp_exception"
+}
+elf_symbol {
+  id: 0x07204218
+  name: "__tracepoint_alarmtimer_cancel"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0xb3209152
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_alarmtimer_cancel"
+}
+elf_symbol {
+  id: 0x1957d7ff
+  name: "__tracepoint_alarmtimer_fired"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x510f7ee3
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_alarmtimer_fired"
+}
+elf_symbol {
+  id: 0x6b87e8a4
+  name: "__tracepoint_alarmtimer_start"
+  is_defined: true
+  symbol_type: OBJECT
+  crc: 0x8b63e12d
+  type_id: 0x18ccbd2c
+  full_name: "__tracepoint_alarmtimer_start"
 }
 elf_symbol {
   id: 0x34912e21
@@ -426603,6 +426664,9 @@ interface {
   symbol_id: 0x46adfea4
   symbol_id: 0x233d8b34
   symbol_id: 0xa5905957
+  symbol_id: 0x70a558c6
+  symbol_id: 0xd75d3861
+  symbol_id: 0xc8ca393a
   symbol_id: 0x17dfc6db
   symbol_id: 0xb42422d5
   symbol_id: 0xb3d70eab
@@ -427289,6 +427353,9 @@ interface {
   symbol_id: 0x961fbab2
   symbol_id: 0x09f12012
   symbol_id: 0xb3150ce0
+  symbol_id: 0x07204218
+  symbol_id: 0x1957d7ff
+  symbol_id: 0x6b87e8a4
   symbol_id: 0x34912e21
   symbol_id: 0x4b7a8fd7
   symbol_id: 0xcd36f539
