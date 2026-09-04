@@ -426,7 +426,16 @@ static void byd_disconnect(struct psmouse *psmouse)
 	struct byd_data *priv = psmouse->private;
 
 	if (priv) {
-		timer_shutdown_sync(&priv->timer);
+		/*
+		 * byd_process_byte() re-arms this timer, and this tree has no
+		 * timer_shutdown_sync(), so the weaker delete is used: a
+		 * callback that starts just before it returns can arm the timer
+		 * once more.  psmouse_disconnect() has already flushed
+		 * kpsmoused_wq and switched the device to command mode before
+		 * calling here, so no further report can reach
+		 * byd_process_byte(), but the window is not closed by the API.
+		 */
+		del_timer_sync(&priv->timer);
 		kfree(psmouse->private);
 		psmouse->private = NULL;
 	}
