@@ -743,7 +743,7 @@ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
 			   struct fwnode_handle *child)
 {
 	const struct fwnode_handle *parent;
-	struct fwnode_handle *child_parent __free(fwnode_handle) = NULL;
+	struct fwnode_handle *child_parent = NULL;
 	struct fwnode_handle *next;
 
 	/*
@@ -757,16 +757,22 @@ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
 	} else {
 		parent = fwnode;
 	}
-	if (IS_ERR_OR_NULL(parent))
+	if (IS_ERR_OR_NULL(parent)) {
+		fwnode_handle_put(child_parent);
 		return NULL;
+	}
 
 	/* Try to find a child in primary fwnode */
 	next = fwnode_call_ptr_op(parent, get_next_child_node, child);
-	if (next)
+	if (next) {
+		fwnode_handle_put(child_parent);
 		return next;
+	}
 
 	/* When no more children in primary, continue with secondary */
-	return fwnode_get_next_child_node(parent->secondary, NULL);
+	next = fwnode_get_next_child_node(parent->secondary, NULL);
+	fwnode_handle_put(child_parent);
+	return next;
 }
 EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
 
